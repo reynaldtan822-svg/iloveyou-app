@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>I Love You App</title>
+	<link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+	<div class="container">
+
+	  <div id="formBox">
+        <h2>Enter Your Information</h2>
+
+        <input type="text" id="name" placeholder="Your Name">
+
+        <input type="number" id="age" placeholder="Your Age">
+
+        <button onclick="showLove()">
+		  Enter
+        </button>
+	  </div>
+
+	  <div id="loveBox">
+        <h1 id="loveText">I LOVE YOU ❤️</h1>
+        <p id="userInfo"></p>
+
+        <button onclick="backForm()">
+		  Back
+        </button>
+	  </div>
+
+	</div>
+
+	<script src="script.js"></script>
+
+  </body>
+</html>
