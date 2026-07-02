@@ -1,39 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
+
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>I Love You App</title>
-	<link rel="stylesheet" href="styles.css">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>MusicHub PH</title>
+
+	<link rel="stylesheet" href="style.css">
+
+	<link rel="manifest" href="manifest.json">
+
+	<meta name="theme-color" content="#00c853">
+
   </head>
+
   <body>
 
-	<div class="container">
+	<header>
 
-	  <div id="formBox">
-        <h2>Enter Your Information</h2>
+	  <h1>🎵 MusicHub PH</h1>
 
-        <input type="text" id="name" placeholder="Your Name">
+	</header>
 
-        <input type="number" id="age" placeholder="Your Age">
+	<div class="searchBox">
 
-        <button onclick="showLove()">
-		  Enter
-        </button>
+	  <input
+		type="text"
+		id="search"
+		placeholder="Search music on YouTube...">
+
+	</div>
+
+	<div id="musicList"
+	  style="
+	  padding:20px;
+	  color:black;
+	  background:white;
+	  ">
+
+	</div>
+
+	<div id="toast">
+
+	</div>
+
+	<div class="mini-player">
+
+	  <img
+		id="miniCover"
+		src="assets/default-cover.png">
+
+	  <div>
+
+		<h3 id="miniTitle">
+
+		  No Music
+
+		</h3>
+
+		<p id="miniArtist">
+
+		  Ready
+
+		</p>
+
 	  </div>
 
-	  <div id="loveBox">
-        <h1 id="loveText">I LOVE YOU ❤️</h1>
-        <p id="userInfo"></p>
+	  <button id="miniPlay">
 
-        <button onclick="backForm()">
-		  Back
-        </button>
-	  </div>
+		▶
+
+	  </button>
 
 	</div>
 
 	<script src="script.js"></script>
 
   </body>
+
 </html>

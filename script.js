@@ -1,54 +1,186 @@
-function showLove(){
+//const API_KEY = "AIzaSyCRNstiZBF60oTLoy6XCNEc2LqiVcO7oww";
 
-let name=document.getElementById("name").value;
-let age=document.getElementById("age").value;
+//const API_KEY="AIzaSyCRNstiZBF60oTLoy6XCNEc2LqiVcO7oww"
 
-if(name=="" || age==""){
+// ==============================
+// MusicHub PH v1.0
+// Core Script
+// Part 2.1
+// ==============================
 
-alert("Please enter Name and Age");
+// ===== YouTube API KEY =====
+const API_KEY = "AIzaSyCRNstiZBF60oTLoy6XCNEc2LqiVcO7oww";
 
-return;
+// ===== HTML Elements =====
+const searchInput = document.getElementById("search");
+const musicList = document.getElementById("musicList");
+const toast = document.getElementById("toast");
+
+// ===== Current Search Result =====
+let currentResults = [];
+
+// ===== Toast Message =====
+function showToast(message){
+
+    toast.innerHTML = message;
+
+    toast.style.opacity = "1";
+
+    setTimeout(function(){
+
+        toast.style.opacity = "0";
+
+    },2000);
 
 }
 
-document.getElementById("formBox").style.display="none";
-document.getElementById("loveBox").style.display="block";
+// ==============================
+// Search when Enter is pressed
+// ==============================
 
-document.getElementById("userInfo").innerHTML=
-"Hi <b>"+name+"</b><br>Age: "+age;
+searchInput.addEventListener("keypress",function(event){
 
-createHearts();
+    if(event.key==="Enter"){
+
+        const keyword=searchInput.value.trim();
+
+        if(keyword===""){
+
+            showToast("Please enter a music title.");
+
+            return;
+
+        }
+
+        searchYouTube(keyword);
+
+    }
+
+});
+
+// ==============================
+// Search YouTube
+// ==============================
+
+async function searchYouTube(keyword){
+
+    musicList.innerHTML="<p>Searching...</p>";
+
+    try{
+
+        const url=
+
+"https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q="+
+
+encodeURIComponent(keyword)+
+
+"&key="+API_KEY;
+
+        const response=await fetch(url);
+
+        const data=await response.json();
+
+        if(data.error){
+
+            showToast(data.error.message);
+
+            musicList.innerHTML="";
+
+            return;
+
+        }
+
+        currentResults=data.items;
+
+        showResults();
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        showToast("Connection Failed");
+
+        musicList.innerHTML="";
+
+    }
 
 }
 
-function backForm(){
+// ==============================
+// Show Search Result
+// (Temporary)
+// ==============================
 
-location.reload();
+function showResults(){
+
+    musicList.innerHTML="";
+
+    if(currentResults.length===0){
+
+        musicList.innerHTML="<p>No music found.</p>";
+
+        return;
+
+    }
+
+    for(let i=0;i<currentResults.length);i++{
+
+        const item=currentResults[i];
+
+        musicList.innerHTML+=
+
+        '<div class="card">'+
+
+        '<img src="'+item.snippet.thumbnails.medium.url+'">'+
+
+        '<div class="info">'+
+
+        '<h3>'+item.snippet.title+'</h3>'+
+
+        '<p>'+item.snippet.channelTitle+'</p>'+
+
+        '<button onclick="openPlayerByIndex('+i+')">▶ Play</button>'+
+
+        '</div>'+
+
+        '</div>';
+
+    }
 
 }
 
-function createHearts(){
+// ==============================
+// Open Player
+// ==============================
 
-setInterval(function(){
+function openPlayerByIndex(index){
 
-let heart=document.createElement("div");
+    if(index<0 || index>=currentResults.length){
 
-heart.className="heart";
+        showToast("Invalid music.");
 
-heart.innerHTML="❤️";
+        return;
 
-heart.style.left=Math.random()*100+"vw";
+    }
 
-heart.style.fontSize=(20+Math.random()*40)+"px";
+    localStorage.setItem(
 
-document.body.appendChild(heart);
+        "currentVideo",
 
-setTimeout(function(){
+        JSON.stringify(currentResults[index])
 
-heart.remove();
+    );
 
-},5000);
+    localStorage.setItem(
 
-},200);
+        "queue",
+
+        JSON.stringify(currentResults)
+
+    );
+
+    location.href="player.html";
 
 }
